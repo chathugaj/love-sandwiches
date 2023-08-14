@@ -1,6 +1,8 @@
 # Your code goes here.
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
+
 
 
 SCOPE = [
@@ -61,12 +63,37 @@ def update_sales_worksheet(data):
   sales_worksheet.append_row(data)
   print("Sales worksheet updated successfully.\n")
 
+def Calculate_surplus_data(sales_row):
+  """
+  Compare the sales with stock and claculate the surplus for each item type.
 
-data = get_sales_data()
-print(data)
-sales_data = [int(num) for num in data]
-update_sales_worksheet(sales_data)
+  The surplus is defined as the sales figure subtrcted froem the stock:
+  -Positive surplus indicates waste
+  - Negative surplus indicates extra made when stock was sold out.
+
+  """
+  print("Calculating_surplus_data...\n")
+  stock = SHEET.worksheet("stock").get_all_values()
+  stock_row = stock[-1]
+  pprint(stock_row)
 
 
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
+
+
+
+def main():
+  """
+  Run all programme functions
+  """
+
+  data = get_sales_data()
+  print(data)
+  sales_data = [int(num) for num in data]
+  update_sales_worksheet(sales_data)
+  Calculate_surplus_data(sales_data)
+  
+
+
+
+print("Welcome to Love Sandwiches Data Automation")
+main()  
